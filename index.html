@@ -1,18 +1,53 @@
 <html>
   <head>
     <title>bzza.net</title>
+    <style>
+        #intro {
+          position: fixed;
+          inset: 0;
+          z-index: 9999;
+          display: grid;
+          place-items: center;
+          background: #000;
+          color: #fff;
+          font: 20px Arial, sans-serif;
+          cursor: pointer;
+          opacity: 1;
+          transition: opacity 1s ease;
+        }
+
+        #intro.fade-out {
+          opacity: 0;
+          pointer-events: none;
+        }
+    </style>
   </head>
 
   <body>
     <h1>its working</h1>
-    <button id="enter">click to enter</button>
+    <div id="intro">
+      <button id="enter">click to enter</button>
+    </div>
     <audio id="music" src="a.mp3" loop></audio>
 
+    
     <script>
-      document.getElementById("enter").addEventListener("click", async () => {
-        await document.getElementById("music").play();
-        document.getElementById("enter").hidden = true;
-      });
-    </script>
+      const intro = document.getElementById("intro");
+      const music = document.getElementById("music");
+
+      intro.addEventListener("click", async () => {
+        intro.classList.add("fade-out");
+
+        try {
+          await music.play();
+        } catch (error) {
+          console.error("Music couldn't start:", error);
+        }
+
+        intro.addEventListener("transitionend", () => {
+          intro.remove();
+          }, { once: true });
+        }, { once: true });
+      </script>
   </body>
 </html>
