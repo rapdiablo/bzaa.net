@@ -5,5 +5,14 @@
 
   <body>
     <h1>its working</h1>
+    <button id="enter">click to enter</button>
+    <audio id="music" src="a.mp3" loop></audio>
+
+    <script>
+      document.getElementById("enter").addEventListener("click", async () => {
+        await document.getElementById("music").play();
+        document.getElementById("enter").hidden = true;
+      });
+    </script>
   </body>
 </html>
