@@ -1,0 +1,275 @@
+
+<html>
+<head>
+    <title>bzza.net</title>
+
+    <style>
+        h1::selection {
+            color: purple;
+            text-shadow: 2px 2px 6px white;
+            background-color: gray;
+        }
+        body {
+            background-color: black;
+            color: white;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            font-family: "Segoe UI", "Source Sans Pro", Calibri, Candara, Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            color: white;
+            text-shadow: 4px 4px 1px purple;
+        }
+        .hanginggirl {
+            margin-top: 0;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            overflow: hidden !important;
+            max-height: 400px;
+            filter: grayscale(1) contrast(200%);
+        }
+        .animated.infinite {
+            -webkit-animation-iteration-count: infinite;
+            animation-iteration-count: infinite;
+        }
+        .animated {
+            -webkit-animation-duration: 4s;
+            animation-duration: 4s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+        }
+        .animatedfast{
+            -webkit-animation-duration: 0.3s;
+            animation-duration: 0.3s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+        }
+        .animated.infinite {
+            -webkit-animation-iteration-count: infinite;
+            animation-iteration-count: infinite;
+        }
+
+        .animated.hinge {
+            -webkit-animation-duration: 2s;
+            nimation-duration: 2s;
+        }
+
+        .animated.flipOutX,
+        .animated.flipOutY,
+        .animated.bounceIn,
+        .animated.bounceOut {
+            -webkit-animation-duration: .75s;
+            animation-duration: .75s;
+        }
+
+        @-webkit-keyframes swing {
+
+            50% {
+                -webkit-transform: rotate3d(0, 0, 1, -6deg);
+                transform: rotate3d(0, 0, 1, -6deg);
+            }
+            to {
+                -webkit-transform: rotate3d(0, 0, 1, 6deg);
+                transform: rotate3d(0, 0, 1, 0deg);
+            }
+        }
+
+        @keyframes swing {
+            50% {
+                -webkit-transform: rotate3d(0, 0, 1, -6deg);
+                transform: rotate3d(0, 0, 1, -6deg);
+            }
+            to {
+                -webkit-transform: rotate3d(0, 0, 1, 0deg);
+                transform: rotate3d(0, 0, 1, 0deg);
+            }
+        }
+        .nodrag {
+            user-drag: none;
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-drag: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+        .swing {
+            -webkit-transform-origin: top center;
+            transform-origin: top center;
+            -webkit-animation-name: swing;
+            animation-name: swing;
+        }
+        .animated {
+            -webkit-animation-duration: 4s;
+            animation-duration: 4s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+        }
+        
+        #intro {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: grid;
+            place-items: center;
+            background: #000;
+            color: white;
+            cursor: pointer;
+            opacity: 1;
+            transition: opacity 1s ease;
+        }
+
+        #intro.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #enter {
+            font-size: 24px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        .fallingStar {
+            position: fixed;
+            top: -30px;
+            pointer-events: none;
+            z-index: 2;
+            color: white;
+            animation: fallStar linear forwards;
+            will-change: transform, opacity;
+        }
+
+        @keyframes fallStar {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .cursorStar {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            color: #c77dff;
+            text-shadow:
+                0 0 5px #c77dff,
+                0 0 10px #a855f7,
+                0 0 20px #9333ea;
+            animation: cursorFade 1s ease-out forwards;
+            will-change: transform, opacity;
+        }
+
+        @keyframes cursorFade {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -100%) scale(0) rotate(180deg);
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <img class="img-responsive hanginggirl animated infinite swing nodrag" draggable="false" src="girl.png" style="display: block;">
+    <h1>bzza.net</h1>
+    
+    <!-- intro stuff -->
+    <div id="intro">
+        <p id="enter">click to enter</p>
+    </div>
+
+    <audio id="music" src="a.mp3" loop></audio>
+
+    <script>
+        const intro = document.getElementById("intro");
+        const music = document.getElementById("music");
+        intro.addEventListener("click", async () => {
+            intro.classList.add("fade-out");
+            try {
+                await music.play();
+            } catch (error) {
+                console.error("Music couldn't start:", error);
+            }
+            intro.addEventListener("transitionend", () => {
+                intro.remove();
+            }, { once: true });
+        }, { once: true });
+    </script>
+
+    <script>
+        const starChars = ['✦', '✧', '✯', '✬', '✫', '*'];
+        function createFallingStar() {
+            const star = document.createElement("div");
+            star.className = "fallingStar";
+            star.textContent = starChars[
+                Math.floor(Math.random() * starChars.length)
+            ];
+            star.style.left = Math.random() * window.innerWidth + "px";
+            star.style.fontSize = (Math.random() * 8 + 10) + "px";
+            star.style.animationDuration = (Math.random() * 3 + 2) + "s";
+            document.body.appendChild(star);
+            star.addEventListener("animationend", () => {
+                star.remove();
+            });
+        }
+        setInterval(createFallingStar, 200);
+    </script>
+
+    <script>
+        const purpleStars = ['✦', '✧', '✯', '✬', '✫', '⋆'];
+        let lastStarTime = 0;
+        document.addEventListener("pointermove", (event) => {
+            const now = Date.now();
+            if (now - lastStarTime < 35) return;
+            lastStarTime = now;
+            const star = document.createElement("div");
+            star.className = "cursorStar";
+            star.textContent = purpleStars[
+                Math.floor(Math.random() * purpleStars.length)
+            ];
+            star.style.left = event.clientX + "px";
+            star.style.top = event.clientY + "px";
+            star.style.fontSize = (Math.random() * 12 + 10) + "px";
+            document.body.appendChild(star);
+            star.addEventListener("animationend", () => {
+                star.remove();
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>
+
