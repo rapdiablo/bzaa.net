@@ -20,6 +20,21 @@
           opacity: 0;
           pointer-events: none;
         }
+      .fallingStar{
+        position:fixed;
+        top:-20px;
+        pointer-events:none;
+        font-size:14px;
+        z-index:9999;
+        animation: fallStar linear forwards;
+      }
+
+      @keyframes fallStar{
+        0%{
+          transform:translateY(0);
+          opacity:1;
+        }
+
     </style>
   </head>
 
@@ -48,6 +63,24 @@
           intro.remove();
           }, { once: true });
         }, { once: true });
-      </script>
+    </script>
+
+    <script>
+        const starChars = ['✦','✧','✯','✬','✫','*']
+        const starColors = ['#ffffff','#ffffff','#ffffff','#ffffff','#ffffff','#ffffff']
+        function createFallingStar(){
+        const star = document.createElement("div")
+        star.className = "fallingStar"
+      star.textContent = starChars[Math.floor(Math.random()*starChars.length)]
+      star.style.left = Math.random()*window.innerWidth + "px"
+      star.style.color = starColors[Math.floor(Math.random()*starColors.length)]
+      star.style.animationDuration = (Math.random()*3+2) + "s"
+      document.body.appendChild(star)
+      setTimeout(()=>{
+        star.remove()
+        },5000)
+      }
+      setInterval(createFallingStar,200)
+    </script>
   </body>
 </html>
